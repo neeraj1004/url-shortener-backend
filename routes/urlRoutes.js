@@ -3,10 +3,7 @@ const { createShortUrl, redirectToOriginalUrl } = require('../controllers/urlCon
 
 const router = express.Router();
 
-// Create short URL
-router.post('/shorten', createShortUrl);
-
-// Redirect to original URL from short one
-router.get('/:shortId', redirectToOriginalUrl);  // 👈 This is the redirection route
+router.post('/shorten', createShortUrl);       // ✅ POST for shortening
+router.get('/:shortId', redirectToOriginalUrl); // ✅ GET for redirecting
 
 module.exports = router;
