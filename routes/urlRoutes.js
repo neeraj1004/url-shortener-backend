@@ -1,21 +1,12 @@
 const express = require('express');
+const { createShortUrl, redirectToOriginalUrl } = require('../controllers/urlController');
+
 const router = express.Router();
-const { nanoid } = require('nanoid');
-const Url = require('../models/Url');
 
-router.post('/shorten', async (req, res) => {
-  const { originalUrl } = req.body;
-  const shortId = nanoid(6);
-  const url = new Url({ originalUrl, shortId });
-  await url.save();
-  res.json({ shortUrl: `http://localhost:5000/${shortId}` });
-});
+// Create short URL
+router.post('/shorten', createShortUrl);
 
-router.get('/:shortId', async (req, res) => {
-  const { shortId } = req.params;
-  const url = await Url.findOne({ shortId });
-  if (url) return res.redirect(url.originalUrl);
-  res.status(404).json({ message: 'URL not found' });
-});
+// Redirect to original URL from short one
+router.get('/:shortId', redirectToOriginalUrl);  // 👈 This is the redirection route
 
 module.exports = router;
